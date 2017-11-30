@@ -235,4 +235,10 @@ public class CommonFileUtils {
 
         return path.replace('\\', '/');
     }
+
+    public static String getFileName(String path) {
+
+        return path.substring(path.lastIndexOf("/") + 1);
+    }
+
 }
