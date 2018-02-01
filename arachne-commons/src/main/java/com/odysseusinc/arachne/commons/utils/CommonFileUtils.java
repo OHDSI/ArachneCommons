@@ -24,6 +24,7 @@ package com.odysseusinc.arachne.commons.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.odysseusinc.arachne.commons.api.v1.dto.CommonAnalysisType;
 import com.odysseusinc.arachne.commons.utils.cohort.CohortDefinitionMatcher;
 import com.odysseusinc.arachne.commons.utils.cohortcharacterization.CohortCharacterizationMatcher;
 import java.io.File;
@@ -147,11 +148,21 @@ public class CommonFileUtils {
 
     public static String getContentType(String realName, String absoluteFilename) {
 
+        return getContentType(realName, absoluteFilename, false, null);
+    }
+
+    public static String getContentType(String realName, String absoluteFilename, boolean executable, CommonAnalysisType analysisType) {
+
         FileSystemResource fsr = new FileSystemResource(absoluteFilename);
-        return getContentType(realName, fsr);
+        return getContentType(realName, fsr, executable, analysisType);
     }
 
     public static String getContentType(String realName, InputStreamSource inputStreamSource) {
+
+        return getContentType(realName, inputStreamSource, false, null);
+    }
+
+    private static String getContentType(String realName, InputStreamSource inputStreamSource, boolean executable, CommonAnalysisType analysisType) {
 
         String mimeType = getMimeType(realName, inputStreamSource);
 
@@ -159,7 +170,7 @@ public class CommonFileUtils {
 
         String jsonContentType;
 
-        if (realName.endsWith(OHDSI_SQL_EXT)) {
+        if (realName.endsWith(OHDSI_SQL_EXT) && (CommonAnalysisType.COHORT == analysisType || executable)) {
             contentType = TYPE_COHORT_SQL;
         } else if ((jsonContentType = cohortDefinitionMatcher.getContentType(realName, inputStreamSource)) != null) {
             contentType = jsonContentType;
