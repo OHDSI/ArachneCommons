@@ -23,7 +23,8 @@
 package com.odysseusinc.arachne.system.settings.repository;
 
 import com.odysseusinc.arachne.system.settings.model.SystemSetting;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-public interface SystemSettingRepository extends CrudRepository<SystemSetting, Long> {
+public interface SystemSettingRepository extends JpaRepository<SystemSetting, Long> {
 }
