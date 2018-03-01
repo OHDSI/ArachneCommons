@@ -32,7 +32,6 @@ import com.odysseusinc.arachne.system.settings.service.SystemSettingsService;
 import io.swagger.annotations.Api;
 import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.restart.RestartEndpoint;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,8 +46,6 @@ public class SystemSettingsController {
 
     @Autowired
     protected GenericConversionService conversionService;
-    @Autowired
-    private RestartEndpoint restartEndpoint;
     @Autowired
     private SystemSettingsService systemSettingsService;
 
@@ -77,15 +74,4 @@ public class SystemSettingsController {
 
         return new JsonResult<>(JsonResult.ErrorCode.NO_ERROR);
     }
-
-    @RequestMapping(value = "/api/v1/admin/restart", method = RequestMethod.POST)
-    public JsonResult restart() {
-
-        Thread restartThread = new Thread(() -> restartEndpoint.restart());
-        restartThread.setDaemon(false);
-        restartThread.start();
-        return new JsonResult<>(JsonResult.ErrorCode.NO_ERROR);
-    }
-
-
 }

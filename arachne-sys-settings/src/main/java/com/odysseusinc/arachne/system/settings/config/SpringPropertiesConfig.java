@@ -59,7 +59,6 @@ public class SpringPropertiesConfig {
             final String datasourcePassword = environment.getProperty("spring.datasource.password");
             final String connectionUrl = encryptablePropertyResolver.resolvePropertyValue(datasourceUrl);
             final String user = encryptablePropertyResolver.resolvePropertyValue(datasourceUsername);
-            final String password = encryptablePropertyResolver.resolvePropertyValue(datasourcePassword);
             DriverManager.registerDriver((Driver) Class.forName("org.postgresql.Driver").newInstance());
             final String cleanURI = connectionUrl.substring(5);
             final URI uri = URI.create(cleanURI);
@@ -68,7 +67,7 @@ public class SpringPropertiesConfig {
             ds.setPortNumber(uri.getPort());
             ds.setDatabaseName(uri.getPath().substring(1));
             ds.setUser(user);
-            ds.setPassword(password);
+            ds.setPassword("ohdsi");
             ds.setMaxConnections(10);
         return ds;
     }
