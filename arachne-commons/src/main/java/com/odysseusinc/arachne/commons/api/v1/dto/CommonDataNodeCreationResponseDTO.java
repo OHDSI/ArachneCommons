@@ -22,6 +22,39 @@
 
 package com.odysseusinc.arachne.commons.api.v1.dto;
 
-public enum CommonCDMVersionDTO {
-    V4_0, V5_0, V5_0_1, V5_1, V5_2, V5_3
+import java.io.Serializable;
+
+public class CommonDataNodeCreationResponseDTO implements Serializable{
+
+    private String dataNodeUuid;
+    private String token;
+    private Long centralId;
+
+    public String getDataNodeUuid() {
+        return dataNodeUuid;
+    }
+
+    public void setDataNodeUuid(String dataNodeUuid) {
+        this.dataNodeUuid = dataNodeUuid;
+    }
+
+    public String getToken() {
+
+        return token;
+    }
+
+    public void setToken(String token) {
+
+        this.token = token;
+    }
+
+    public Long getCentralId() {
+
+        return centralId;
+    }
+
+    public void setCentralId(Long centralId) {
+
+        this.centralId = centralId;
+    }
 }
