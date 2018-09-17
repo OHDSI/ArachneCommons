@@ -25,11 +25,32 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class DeleteUserEvent extends LoggingEvent {
-    public DeleteUserEvent(Object source, LogLevel logLevel) {
+    private long id;
+    private String login;
+
+    public DeleteUserEvent(Object source, LogLevel logLevel, long id, String login) {
         super(source, logLevel);
+        this.id = id;
+        this.login = login;
     }
 
-    public DeleteUserEvent(Object source) {
-        super(source);
+    public DeleteUserEvent(Object source, long id, String login) {
+        this(source, LogLevel.INFO, id, login);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

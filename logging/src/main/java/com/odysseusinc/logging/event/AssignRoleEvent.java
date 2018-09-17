@@ -25,11 +25,32 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class AssignRoleEvent extends LoggingEvent {
-    public AssignRoleEvent(Object source, LogLevel logLevel) {
+    private long roleId;
+    private long userId;
+
+    public AssignRoleEvent(Object source, LogLevel logLevel, long roleId, long userId) {
         super(source, logLevel);
+        this.roleId = roleId;
+        this.userId = userId;
     }
 
-    public AssignRoleEvent(Object source) {
-        super(source);
+    public AssignRoleEvent(Object source, long roleId, long userId) {
+        this(source, LogLevel.INFO, roleId, userId);
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

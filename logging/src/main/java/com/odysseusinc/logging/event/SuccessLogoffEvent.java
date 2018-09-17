@@ -30,6 +30,6 @@ public class SuccessLogoffEvent extends LoggingEvent {
     }
 
     public SuccessLogoffEvent(Object source) {
-        super(source);
+        this(source, LogLevel.INFO);
     }
 }

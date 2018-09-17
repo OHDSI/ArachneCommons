@@ -25,11 +25,22 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class LockoutStartEvent extends LoggingEvent {
-    public LockoutStartEvent(Object source, LogLevel logLevel) {
+    private String userName;
+
+    public LockoutStartEvent(Object source, LogLevel logLevel, String userName) {
         super(source, logLevel);
+        this.userName = userName;
     }
 
-    public LockoutStartEvent(Object source) {
-        super(source);
+    public LockoutStartEvent(Object source, String userName) {
+        this(source, LogLevel.INFO, userName);
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -38,9 +38,12 @@ public class LoggingEventMessageFactory {
             AddUserEvent.class,
             AssignRoleEvent.class,
             ChangeDataSourceEvent.class,
+            ChangeRoleEvent.class,
             DeleteDataSourceEvent.class,
             DeletePermissionEvent.class,
+            DeleteRoleEvent.class,
             DeleteUserEvent.class,
+            FailedDbConnectEvent.class,
             FailedLogoffEvent.class,
             FailedLogonEvent.class,
             LockoutStartEvent.class,
@@ -53,37 +56,43 @@ public class LoggingEventMessageFactory {
 
         String message = "";
         if (event instanceof AddDataSourceEvent) {
-            message = "AddDataSourceEvent is received";
+            message = "Data source id = " + ((AddDataSourceEvent) event).getId() + ", name = " + ((AddDataSourceEvent) event).getName() + " was created";
         } else if (event instanceof AddPermissionEvent) {
-            message = "AddPermissionEvent is received";
+            message = "Permission id = " + ((AddPermissionEvent) event).getPermissionId() + " was added to role id = " + ((AddPermissionEvent) event).getRoleId();
         } else if (event instanceof AddRoleEvent) {
-            message = "AddRoleEvent is received";
+            message = "Role id = " + ((AddRoleEvent) event).getId() + ", name = " + ((AddRoleEvent) event).getName() + " was created";
         } else if (event instanceof AddUserEvent) {
-            message = "AddUserEvent is received";
+            message = "User id = " + ((AddUserEvent) event).getId() + ", login = " + ((AddUserEvent) event).getLogin() + " was created";
         } else if (event instanceof AssignRoleEvent) {
-            message = "AssignRoleEvent is received";
+            message = "Role id = " + ((AssignRoleEvent) event).getUserId() + " was assigned to user id = " + ((AssignRoleEvent) event).getUserId();
         } else if (event instanceof ChangeDataSourceEvent) {
-            message = "ChangeDataSourceEvent is received";
+            message = "Data source id = " + ((ChangeDataSourceEvent) event).getId() + ", name = " + ((ChangeDataSourceEvent) event).getName() + " was changed";
+        } else if (event instanceof ChangeRoleEvent) {
+            message = "Role id = " + ((ChangeRoleEvent) event).getId() + ", name = " + ((ChangeRoleEvent) event).getName() + " was changed";
         } else if (event instanceof DeleteDataSourceEvent) {
-            message = "DeleteDataSourceEvent is received";
+            message = "Data source id = " + ((DeleteDataSourceEvent) event).getId() + ", name = " + ((DeleteDataSourceEvent) event).getName() + " was deleted";
         } else if (event instanceof DeletePermissionEvent) {
-            message = "DeletePermissionEvent is received";
+            message = "Permission id = " + ((DeletePermissionEvent) event).getPermissionId() + " was removed from role id = " + ((DeletePermissionEvent) event).getRoleId();
+        } else if (event instanceof DeleteRoleEvent) {
+            message = "Role id = " + ((DeleteRoleEvent) event).getId() + " was deleted";
         } else if (event instanceof DeleteUserEvent) {
-            message = "DeleteUserEvent is received";
+            message = "User id = " + ((DeleteUserEvent) event).getId() + ", login = " + ((DeleteUserEvent) event).getLogin() + " was deleted";
+        } else if (event instanceof FailedDbConnectEvent) {
+            message = "FailedDbConnectEvent is received";
         } else if (event instanceof FailedLogoffEvent) {
-            message = "FailedLogoffEvent is received";
+            message = "Logoff failed for user";
         } else if (event instanceof FailedLogonEvent) {
-            message = "FailedLogonEvent is received";
+            message = "Logon failed for user name = " + ((FailedLogonEvent) event).getUsername();
         } else if (event instanceof LockoutStartEvent) {
-            message = "LockoutStartEvent event is received";
+            message = "Lockout started for user id = " + ((LockoutStartEvent) event).getUserName();
         } else if (event instanceof LockoutStopEvent) {
-            message = "LockoutStopEvent is received";
+            message = "Lockout stopped for user id = " + ((LockoutStopEvent) event).getUserName();
         } else if (event instanceof SuccessLogoffEvent) {
-            message = "SuccessLogoffEvent is received";
+            message = "User was logged off";
         } else if (event instanceof SuccessLogonEvent) {
-            message = "SuccessLogonEvent is received";
+            message = "User name = " + ((SuccessLogonEvent) event).getUsername() + " was logged in";
         } else if (event instanceof UnassignRoleEvent) {
-            message = "UnassignRoleEvent is received";
+            message = "Role id = " + ((UnassignRoleEvent) event).getUserId() + " was unassigned from user id = " + ((UnassignRoleEvent) event).getUserId();
         }
         return message;
     }

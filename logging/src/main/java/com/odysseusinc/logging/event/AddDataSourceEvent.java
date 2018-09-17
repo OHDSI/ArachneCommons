@@ -25,11 +25,32 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class AddDataSourceEvent extends LoggingEvent {
-    public AddDataSourceEvent(Object source, LogLevel logLevel) {
+    private int id;
+    private String name;
+
+    public AddDataSourceEvent(Object source, LogLevel logLevel, int id, String name) {
         super(source, logLevel);
+        this.id = id;
+        this.name = name;
     }
 
-    public AddDataSourceEvent(Object source) {
-        super(source);
+    public AddDataSourceEvent(Object source, int id, String name) {
+        this(source, LogLevel.INFO, id, name);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

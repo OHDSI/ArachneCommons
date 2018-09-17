@@ -16,41 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Anastasiia Klochkova
- * Created: August 29, 2018
+ * Created: September 17, 2018
  *
  */
 
 package com.odysseusinc.logging.event;
 
+
 import com.odysseusinc.logging.LogLevel;
 
-public class AddRoleEvent extends LoggingEvent {
-    private long id;
-    private String name;
-
-    public AddRoleEvent(Object source, LogLevel logLevel, long id, String name) {
+public class FailedDbConnectEvent extends LoggingEvent {
+    public FailedDbConnectEvent(Object source, LogLevel logLevel) {
         super(source, logLevel);
-        this.id = id;
-        this.name = name;
     }
 
-    public AddRoleEvent(Object source, long id, String name) {
-        this(source, LogLevel.INFO, id, name);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public FailedDbConnectEvent(Object source) {
+        this(source, LogLevel.INFO);
     }
 }

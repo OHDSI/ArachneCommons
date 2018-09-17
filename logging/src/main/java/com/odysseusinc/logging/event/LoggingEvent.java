@@ -34,10 +34,6 @@ public abstract class LoggingEvent extends ApplicationEvent {
         this.logLevel = logLevel;
     }
 
-    public LoggingEvent(Object source) {
-        this(source, LogLevel.INFO);
-    }
-
     public LogLevel getLogLevel() {
         return this.logLevel;
     }

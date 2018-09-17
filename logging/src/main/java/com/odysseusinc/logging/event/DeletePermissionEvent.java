@@ -25,11 +25,32 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class DeletePermissionEvent extends LoggingEvent {
-    public DeletePermissionEvent(Object source, LogLevel logLevel) {
+    private long permissionId;
+    private long roleId;
+
+    public DeletePermissionEvent(Object source, LogLevel logLevel, long permissionId, long roleId) {
         super(source, logLevel);
+        this.permissionId = permissionId;
+        this.roleId = roleId;
     }
 
-    public DeletePermissionEvent(Object source) {
-        super(source);
+    public DeletePermissionEvent(Object source, long permissionId, long roleId) {
+        this(source, LogLevel.INFO, permissionId, roleId);
+    }
+
+    public long getPermissionId() {
+        return permissionId;
+    }
+
+    public void setPermissionId(long permissionId) {
+        this.permissionId = permissionId;
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 }

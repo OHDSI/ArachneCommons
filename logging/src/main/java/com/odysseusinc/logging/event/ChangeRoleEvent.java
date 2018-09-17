@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Anastasiia Klochkova
- * Created: August 29, 2018
+ * Created: September 17, 2018
  *
  */
 
@@ -24,17 +24,15 @@ package com.odysseusinc.logging.event;
 
 import com.odysseusinc.logging.LogLevel;
 
-public class AddRoleEvent extends LoggingEvent {
+public class ChangeRoleEvent extends LoggingEvent {
     private long id;
     private String name;
 
-    public AddRoleEvent(Object source, LogLevel logLevel, long id, String name) {
+    public ChangeRoleEvent(Object source, LogLevel logLevel, long id, String name) {
         super(source, logLevel);
-        this.id = id;
-        this.name = name;
     }
 
-    public AddRoleEvent(Object source, long id, String name) {
+    public ChangeRoleEvent(Object source, long id, String name) {
         this(source, LogLevel.INFO, id, name);
     }
 
