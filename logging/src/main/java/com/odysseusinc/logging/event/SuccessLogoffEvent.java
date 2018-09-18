@@ -25,11 +25,22 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class SuccessLogoffEvent extends LoggingEvent {
-    public SuccessLogoffEvent(Object source, LogLevel logLevel) {
+    private String login;
+
+    public SuccessLogoffEvent(Object source, LogLevel logLevel, String login) {
         super(source, logLevel);
+        this.login = login;
     }
 
-    public SuccessLogoffEvent(Object source) {
-        this(source, LogLevel.INFO);
+    public SuccessLogoffEvent(Object source, String login) {
+        this(source, LogLevel.INFO, login);
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

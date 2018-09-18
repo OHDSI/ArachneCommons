@@ -78,19 +78,19 @@ public class LoggingEventMessageFactory {
         } else if (event instanceof DeleteUserEvent) {
             message = "User id = " + ((DeleteUserEvent) event).getId() + ", login = " + ((DeleteUserEvent) event).getLogin() + " was deleted";
         } else if (event instanceof FailedDbConnectEvent) {
-            message = "FailedDbConnectEvent is received";
+            message = ((FailedDbConnectEvent) event).getException();
         } else if (event instanceof FailedLogoffEvent) {
-            message = "Logoff failed for user";
+            message = "Logoff failed for user login = " + ((FailedLogoffEvent) event).getLogin();
         } else if (event instanceof FailedLogonEvent) {
-            message = "Logon failed for user name = " + ((FailedLogonEvent) event).getUsername();
+            message = "Logon failed for user login = " + ((FailedLogonEvent) event).getLogin();
         } else if (event instanceof LockoutStartEvent) {
-            message = "Lockout started for user id = " + ((LockoutStartEvent) event).getUserName();
+            message = "Lockout started for user login = " + ((LockoutStartEvent) event).getLogin();
         } else if (event instanceof LockoutStopEvent) {
-            message = "Lockout stopped for user id = " + ((LockoutStopEvent) event).getUserName();
+            message = "Lockout stopped for user login = " + ((LockoutStopEvent) event).getLogin();
         } else if (event instanceof SuccessLogoffEvent) {
-            message = "User was logged off";
+            message = "User login = " + ((SuccessLogoffEvent) event).getLogin() + " was logged off";
         } else if (event instanceof SuccessLogonEvent) {
-            message = "User name = " + ((SuccessLogonEvent) event).getUsername() + " was logged in";
+            message = "User login = " + ((SuccessLogonEvent) event).getLogin() + " was logged in";
         } else if (event instanceof UnassignRoleEvent) {
             message = "Role id = " + ((UnassignRoleEvent) event).getUserId() + " was unassigned from user id = " + ((UnassignRoleEvent) event).getUserId();
         }

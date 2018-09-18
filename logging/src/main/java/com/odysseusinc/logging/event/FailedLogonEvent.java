@@ -25,22 +25,22 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class FailedLogonEvent extends LoggingEvent {
-    private String username;
+    private String login;
 
-    public FailedLogonEvent(Object source, LogLevel logLevel, String username) {
+    public FailedLogonEvent(Object source, LogLevel logLevel, String login) {
         super(source, logLevel);
-        this.setUsername(username);
+        this.setLogin(login);
     }
 
-    public FailedLogonEvent(Object source, String username) {
-        this(source, LogLevel.INFO, username);
+    public FailedLogonEvent(Object source, String login) {
+        this(source, LogLevel.INFO, login);
     }
 
-    public String getUsername() {
-        return username;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

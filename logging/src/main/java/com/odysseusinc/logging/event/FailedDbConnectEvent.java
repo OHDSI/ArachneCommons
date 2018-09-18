@@ -26,11 +26,22 @@ package com.odysseusinc.logging.event;
 import com.odysseusinc.logging.LogLevel;
 
 public class FailedDbConnectEvent extends LoggingEvent {
-    public FailedDbConnectEvent(Object source, LogLevel logLevel) {
+    private String exception;
+
+    public FailedDbConnectEvent(Object source, LogLevel logLevel, String exception) {
         super(source, logLevel);
+        this.exception = exception;
     }
 
-    public FailedDbConnectEvent(Object source) {
-        this(source, LogLevel.INFO);
+    public FailedDbConnectEvent(Object source, String exception) {
+        this(source, LogLevel.INFO, exception);
+    }
+
+    public String getException() {
+        return exception;
+    }
+
+    public void setException(String exception) {
+        this.exception = exception;
     }
 }
