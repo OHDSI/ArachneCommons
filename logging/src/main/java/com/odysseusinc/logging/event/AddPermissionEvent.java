@@ -42,15 +42,7 @@ public class AddPermissionEvent extends LoggingEvent {
         return permissionId;
     }
 
-    public void setPermissionId(long permissionId) {
-        this.permissionId = permissionId;
-    }
-
     public long getRoleId() {
         return roleId;
-    }
-
-    public void setRoleId(long roleId) {
-        this.roleId = roleId;
     }
 }

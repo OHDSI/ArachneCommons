@@ -29,7 +29,7 @@ public class FailedLogonEvent extends LoggingEvent {
 
     public FailedLogonEvent(Object source, LogLevel logLevel, String login) {
         super(source, logLevel);
-        this.setLogin(login);
+        this.login = login;
     }
 
     public FailedLogonEvent(Object source, String login) {
@@ -38,9 +38,5 @@ public class FailedLogonEvent extends LoggingEvent {
 
     public String getLogin() {
         return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 }

@@ -23,12 +23,10 @@
 package com.odysseusinc.logging;
 
 import com.odysseusinc.logging.event.*;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Component
 public class LoggingEventMessageFactory {
 
     private final static List<Class> supportedEvents = Arrays.asList(
@@ -56,43 +54,43 @@ public class LoggingEventMessageFactory {
 
         String message = "";
         if (event instanceof AddDataSourceEvent) {
-            message = "Data source id = " + ((AddDataSourceEvent) event).getId() + ", name = " + ((AddDataSourceEvent) event).getName() + " was created";
+            message = String.format("Data source id = %d, name = %s was created", ((AddDataSourceEvent) event).getId(), ((AddDataSourceEvent) event).getName());
         } else if (event instanceof AddPermissionEvent) {
-            message = "Permission id = " + ((AddPermissionEvent) event).getPermissionId() + " was added to role id = " + ((AddPermissionEvent) event).getRoleId();
+            message = String.format("Permission id = %d was added to role id = %d", ((AddPermissionEvent) event).getPermissionId(), ((AddPermissionEvent) event).getRoleId());
         } else if (event instanceof AddRoleEvent) {
-            message = "Role id = " + ((AddRoleEvent) event).getId() + ", name = " + ((AddRoleEvent) event).getName() + " was created";
+            message = String.format("Role id = %d, name = %s was created", ((AddRoleEvent) event).getId(), ((AddRoleEvent) event).getName());
         } else if (event instanceof AddUserEvent) {
-            message = "User id = " + ((AddUserEvent) event).getId() + ", login = " + ((AddUserEvent) event).getLogin() + " was created";
+            message = String.format("User id = %d, login = %s was created", ((AddUserEvent) event).getId(), ((AddUserEvent) event).getLogin());
         } else if (event instanceof AssignRoleEvent) {
-            message = "Role id = " + ((AssignRoleEvent) event).getUserId() + " was assigned to user id = " + ((AssignRoleEvent) event).getUserId();
+            message = String.format("Role id = %d was assigned to user id = %d", ((AssignRoleEvent) event).getUserId(), ((AssignRoleEvent) event).getUserId());
         } else if (event instanceof ChangeDataSourceEvent) {
-            message = "Data source id = " + ((ChangeDataSourceEvent) event).getId() + ", name = " + ((ChangeDataSourceEvent) event).getName() + " was changed";
+            message = String.format("Data source id = %d, name = %s was changed", ((ChangeDataSourceEvent) event).getId(), ((ChangeDataSourceEvent) event).getName());
         } else if (event instanceof ChangeRoleEvent) {
-            message = "Role id = " + ((ChangeRoleEvent) event).getId() + ", name = " + ((ChangeRoleEvent) event).getName() + " was changed";
+            message = String.format("Role id = %d, name = %s was changed", ((ChangeRoleEvent) event).getId(), ((ChangeRoleEvent) event).getName());
         } else if (event instanceof DeleteDataSourceEvent) {
-            message = "Data source id = " + ((DeleteDataSourceEvent) event).getId() + ", name = " + ((DeleteDataSourceEvent) event).getName() + " was deleted";
+            message = String.format("Data source id = %d, name = %s was deleted", ((DeleteDataSourceEvent) event).getId(), ((DeleteDataSourceEvent) event).getName());
         } else if (event instanceof DeletePermissionEvent) {
-            message = "Permission id = " + ((DeletePermissionEvent) event).getPermissionId() + " was removed from role id = " + ((DeletePermissionEvent) event).getRoleId();
+            message = String.format("Permission id = %d was removed from role id = %d", ((DeletePermissionEvent) event).getPermissionId(), ((DeletePermissionEvent) event).getRoleId());
         } else if (event instanceof DeleteRoleEvent) {
-            message = "Role id = " + ((DeleteRoleEvent) event).getId() + " was deleted";
+            message = String.format("Role id = %d was deleted", ((DeleteRoleEvent) event).getId());
         } else if (event instanceof DeleteUserEvent) {
-            message = "User id = " + ((DeleteUserEvent) event).getId() + ", login = " + ((DeleteUserEvent) event).getLogin() + " was deleted";
+            message = String.format("User id = %d, login = %s was deleted", ((DeleteUserEvent) event).getId(), ((DeleteUserEvent) event).getLogin());
         } else if (event instanceof FailedDbConnectEvent) {
             message = ((FailedDbConnectEvent) event).getException();
         } else if (event instanceof FailedLogoffEvent) {
-            message = "Logoff failed for user login = " + ((FailedLogoffEvent) event).getLogin();
+            message = String.format("Logoff failed for user login = %s", ((FailedLogoffEvent) event).getLogin());
         } else if (event instanceof FailedLogonEvent) {
-            message = "Logon failed for user login = " + ((FailedLogonEvent) event).getLogin();
+            message = String.format("Logon failed for user login = %s", ((FailedLogonEvent) event).getLogin());
         } else if (event instanceof LockoutStartEvent) {
-            message = "Lockout started for user login = " + ((LockoutStartEvent) event).getLogin();
+            message = String.format("Lockout started for user login = %s", ((LockoutStartEvent) event).getLogin());
         } else if (event instanceof LockoutStopEvent) {
-            message = "Lockout stopped for user login = " + ((LockoutStopEvent) event).getLogin();
+            message = String.format("Lockout stopped for user login = %s", ((LockoutStopEvent) event).getLogin());
         } else if (event instanceof SuccessLogoffEvent) {
-            message = "User login = " + ((SuccessLogoffEvent) event).getLogin() + " was logged off";
+            message = String.format("User login = %s was logged off", ((SuccessLogoffEvent) event).getLogin());
         } else if (event instanceof SuccessLogonEvent) {
-            message = "User login = " + ((SuccessLogonEvent) event).getLogin() + " was logged in";
+            message = String.format("User login = %s was logged in", ((SuccessLogonEvent) event).getLogin());
         } else if (event instanceof UnassignRoleEvent) {
-            message = "Role id = " + ((UnassignRoleEvent) event).getUserId() + " was unassigned from user id = " + ((UnassignRoleEvent) event).getUserId();
+            message = String.format("Role id = %d was unassigned from user id = %d", ((UnassignRoleEvent) event).getUserId(), ((UnassignRoleEvent) event).getUserId());
         }
         return message;
     }

@@ -40,8 +40,4 @@ public class FailedDbConnectEvent extends LoggingEvent {
     public String getException() {
         return exception;
     }
-
-    public void setException(String exception) {
-        this.exception = exception;
-    }
 }

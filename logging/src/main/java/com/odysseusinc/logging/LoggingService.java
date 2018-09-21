@@ -25,38 +25,28 @@ package com.odysseusinc.logging;
 import com.odysseusinc.logging.event.LoggingEvent;
 import org.apache.log4j.Logger;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+
 public class LoggingService {
     private LoggingEventMessageFactory factory;
     private final Logger log = Logger.getLogger(LoggingService.class);
+    private Map<LogLevel, Consumer<String>> logLevelAction = new HashMap<>();
 
     public LoggingService(LoggingEventMessageFactory factory) {
         this.factory = factory;
+        logLevelAction.put(LogLevel.DEBUG, log::debug);
+        logLevelAction.put(LogLevel.INFO, log::info);
+        logLevelAction.put(LogLevel.WARN, log::warn);
+        logLevelAction.put(LogLevel.ERROR, log::error);
     }
 
     @EventListener
     public void logEvent(LoggingEvent event) {
         String message = factory.getMessage(event);
         LogLevel level = event.getLogLevel();
-        switch (level) {
-            case DEBUG: {
-                log.debug(message);
-                break;
-            }
-            case INFO: {
-                log.info(message);
-                break;
-            }
-            case WARN: {
-                log.warn(message);
-                break;
-            }
-            case ERROR: {
-                log.error(message);
-                break;
-            }
-        }
+        logLevelAction.get(level).accept(message);
     }
 }
