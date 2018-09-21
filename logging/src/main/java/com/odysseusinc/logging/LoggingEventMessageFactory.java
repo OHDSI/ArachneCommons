@@ -26,6 +26,8 @@ import com.odysseusinc.logging.event.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class LoggingEventMessageFactory {
 
@@ -50,49 +52,124 @@ public class LoggingEventMessageFactory {
             SuccessLogonEvent.class,
             UnassignRoleEvent.class);
 
+    private BiFunction<String, Supplier<Object[]>, String> format = (t, e) -> String.format(t, e.get());
+
     public String getMessage(LoggingEvent event) {
 
         String message = "";
+
         if (event instanceof AddDataSourceEvent) {
-            message = String.format("Data source id = %d, name = %s was created", ((AddDataSourceEvent) event).getId(), ((AddDataSourceEvent) event).getName());
+            message = dataSourceAdded((AddDataSourceEvent) event);
         } else if (event instanceof AddPermissionEvent) {
-            message = String.format("Permission id = %d was added to role id = %d", ((AddPermissionEvent) event).getPermissionId(), ((AddPermissionEvent) event).getRoleId());
+            message = permissionAdded((AddPermissionEvent) event);
         } else if (event instanceof AddRoleEvent) {
-            message = String.format("Role id = %d, name = %s was created", ((AddRoleEvent) event).getId(), ((AddRoleEvent) event).getName());
+            message = roleAdded((AddRoleEvent) event);
         } else if (event instanceof AddUserEvent) {
-            message = String.format("User id = %d, login = %s was created", ((AddUserEvent) event).getId(), ((AddUserEvent) event).getLogin());
+            message = userAdded((AddUserEvent) event);
         } else if (event instanceof AssignRoleEvent) {
-            message = String.format("Role id = %d was assigned to user id = %d", ((AssignRoleEvent) event).getUserId(), ((AssignRoleEvent) event).getUserId());
+            message = roleAssigned((AssignRoleEvent) event);
         } else if (event instanceof ChangeDataSourceEvent) {
-            message = String.format("Data source id = %d, name = %s was changed", ((ChangeDataSourceEvent) event).getId(), ((ChangeDataSourceEvent) event).getName());
+            message = dataSourceChanged((ChangeDataSourceEvent) event);
         } else if (event instanceof ChangeRoleEvent) {
-            message = String.format("Role id = %d, name = %s was changed", ((ChangeRoleEvent) event).getId(), ((ChangeRoleEvent) event).getName());
+            message = roleChanged((ChangeRoleEvent) event);
         } else if (event instanceof DeleteDataSourceEvent) {
-            message = String.format("Data source id = %d, name = %s was deleted", ((DeleteDataSourceEvent) event).getId(), ((DeleteDataSourceEvent) event).getName());
+            message = dataSourceDeleted((DeleteDataSourceEvent) event);
         } else if (event instanceof DeletePermissionEvent) {
-            message = String.format("Permission id = %d was removed from role id = %d", ((DeletePermissionEvent) event).getPermissionId(), ((DeletePermissionEvent) event).getRoleId());
+            message = permissionDeleted((DeletePermissionEvent) event);
         } else if (event instanceof DeleteRoleEvent) {
-            message = String.format("Role id = %d was deleted", ((DeleteRoleEvent) event).getId());
+            message = roleDeleted((DeleteRoleEvent) event);
         } else if (event instanceof DeleteUserEvent) {
-            message = String.format("User id = %d, login = %s was deleted", ((DeleteUserEvent) event).getId(), ((DeleteUserEvent) event).getLogin());
+            message = userDeleted((DeleteUserEvent) event);
         } else if (event instanceof FailedDbConnectEvent) {
             message = ((FailedDbConnectEvent) event).getException();
         } else if (event instanceof FailedLogoffEvent) {
-            message = String.format("Logoff failed for user login = %s", ((FailedLogoffEvent) event).getLogin());
+            message = logoffFailed((FailedLogoffEvent) event);
         } else if (event instanceof FailedLogonEvent) {
-            message = String.format("Logon failed for user login = %s", ((FailedLogonEvent) event).getLogin());
+            message = logonFailed((FailedLogonEvent) event);
         } else if (event instanceof LockoutStartEvent) {
-            message = String.format("Lockout started for user login = %s", ((LockoutStartEvent) event).getLogin());
+            message = lockoutStarted((LockoutStartEvent) event);
         } else if (event instanceof LockoutStopEvent) {
-            message = String.format("Lockout stopped for user login = %s", ((LockoutStopEvent) event).getLogin());
+            message = lockoutStopped((LockoutStopEvent) event);
         } else if (event instanceof SuccessLogoffEvent) {
-            message = String.format("User login = %s was logged off", ((SuccessLogoffEvent) event).getLogin());
+            message = logoffSucceded((SuccessLogoffEvent) event);
         } else if (event instanceof SuccessLogonEvent) {
-            message = String.format("User login = %s was logged in", ((SuccessLogonEvent) event).getLogin());
+            message = logonSucceeded((SuccessLogonEvent) event);
         } else if (event instanceof UnassignRoleEvent) {
-            message = String.format("Role id = %d was unassigned from user id = %d", ((UnassignRoleEvent) event).getUserId(), ((UnassignRoleEvent) event).getUserId());
+            message = roleUnassigned((UnassignRoleEvent) event);
         }
         return message;
+    }
+
+    private String roleUnassigned(UnassignRoleEvent event) {
+        return format.apply("Role id = %d was unassigned from user id = %d", () -> new Object[]{event.getUserId(), event.getUserId()});
+    }
+
+    private String logonSucceeded(SuccessLogonEvent event) {
+        return format.apply("User login = %s was logged in", () -> new Object[]{event.getLogin()});
+    }
+
+    private String logoffSucceded(SuccessLogoffEvent event) {
+        return format.apply("User login = %s was logged off", () -> new Object[]{event.getLogin()});
+    }
+
+    private String lockoutStopped(LockoutStopEvent event) {
+        return format.apply("Lockout stopped for user login = %s", () -> new Object[]{event.getLogin()});
+    }
+
+    private String lockoutStarted(LockoutStartEvent event) {
+        return format.apply("Lockout started for user login = %s", () -> new Object[]{event.getLogin()});
+    }
+
+    private String logonFailed(FailedLogonEvent event) {
+        return format.apply("Logon failed for user login = %s", () -> new Object[]{event.getLogin()});
+    }
+
+    private String logoffFailed(FailedLogoffEvent event) {
+        return format.apply("Logoff failed for user login = %s", () -> new Object[]{event.getLogin()});
+    }
+
+    private String userDeleted(DeleteUserEvent event) {
+        return format.apply("User id = %d, login = %s was deleted", () -> new Object[]{event.getId(), event.getLogin()});
+    }
+
+    private String roleDeleted(DeleteRoleEvent event) {
+        return format.apply("Role id = %d was deleted", () -> new Object[]{event.getId()});
+    }
+
+    private String permissionDeleted(DeletePermissionEvent event) {
+        return format.apply("Permission id = %d was removed from role id = %d", () -> new Object[]{event.getPermissionId(), event.getRoleId()});
+    }
+
+    private String dataSourceDeleted(DeleteDataSourceEvent event) {
+        return format.apply("Data source id = %d, name = %s was deleted", () -> new Object[]{event.getId(), event.getName()});
+    }
+
+    private String roleChanged(ChangeRoleEvent event) {
+        return format.apply("Role id = %d, name = %s was changed", () -> new Object[]{event.getId(), event.getName()});
+    }
+
+    private String dataSourceChanged(ChangeDataSourceEvent event) {
+        return format.apply("Data source id = %d, name = %s was changed", () -> new Object[]{event.getId(), event.getName()});
+    }
+
+    private String roleAssigned(AssignRoleEvent event) {
+        return format.apply("Role id = %d was assigned to user id = %d", () -> new Object[]{event.getUserId(), event.getUserId()});
+    }
+
+    private String userAdded(AddUserEvent event) {
+        return format.apply("User id = %d, login = %s was created", () -> new Object[]{event.getId(), event.getLogin()});
+    }
+
+    private String roleAdded(AddRoleEvent e) {
+        return format.apply("Role id = %d, name = %s was created", () -> new Object[]{e.getId(), e.getName()});
+    }
+
+    private String dataSourceAdded(AddDataSourceEvent e) {
+        return format.apply("Data source id = %d, name = %s was created", () -> new Object[]{e.getId(), e.getName()});
+    }
+
+    private String permissionAdded(AddPermissionEvent e) {
+        return format.apply("Permission id = %d was added to role id = %d", () -> new Object[]{e.getPermissionId(), e.getRoleId()});
     }
 
     public List<Class> getSupportedEventTypes() {
