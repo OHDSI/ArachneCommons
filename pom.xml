@@ -16,6 +16,7 @@
         <module>arachne-storage</module>
         <module>arachne-no-handler-found-exception-util</module>
         <module>logging</module>
+        <module>krb-login</module>
     </modules>
 
     <properties>
