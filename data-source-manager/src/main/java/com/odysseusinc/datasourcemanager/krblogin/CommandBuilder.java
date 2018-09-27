@@ -20,8 +20,33 @@
  *
  */
 
-package com.odysseusinc.krblogin;
+package com.odysseusinc.datasourcemanager.krblogin;
 
-public enum RuntimeServiceMode {
-    SINGLE, ISOLATED
+import java.util.ArrayList;
+import java.util.List;
+
+public class CommandBuilder {
+
+    List<String> statements = new ArrayList<>();
+
+    private CommandBuilder() {
+    }
+
+    public static CommandBuilder newCommand() {
+        return new CommandBuilder();
+    }
+
+    public CommandBuilder statement(String statement) {
+        statements.add(statement);
+        return this;
+    }
+
+    public CommandBuilder withParam(String param) {
+        statements.add(param);
+        return this;
+    }
+
+    public String[] build() {
+        return statements.toArray(new String[0]);
+    }
 }

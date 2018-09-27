@@ -20,7 +20,7 @@
  *
  */
 
-package com.odysseusinc.krblogin;
+package com.odysseusinc.datasourcemanager.krblogin;
 
 import com.odysseusinc.arachne.execution_engine_common.api.v1.dto.DataSourceUnsecuredDTO;
 

@@ -20,7 +20,7 @@
  *
  */
 
-package com.odysseusinc.krblogin;
+package com.odysseusinc.datasourcemanager.krblogin;
 
 import com.github.jknack.handlebars.Template;
 import com.odysseusinc.arachne.commons.utils.TemplateUtils;
@@ -31,8 +31,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -45,24 +43,22 @@ import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Service
 public class KerberosServiceImpl implements KerberosService {
 
     private static final Logger log = LoggerFactory.getLogger(KerberosService.class);
     private static final String LOG_FILE = "kinit_out.txt";
     private static final String KINIT_COMMAND = "kinit";
-
-    @Value("${kerberos.timeout}")
-    private long timeout;
-
-    @Value("${kerberos.kinitPath}")
-    private String kinitPath;
-
-    @Value("${kerberos.configPath}")
-    private String configPath;
-
     private final static String REALMS = "[realms]";
     private final static String DOMAIIN_REALM = "[domain_realm]";
+    private long timeout;
+    private String kinitPath;
+    private String configPath;
+
+    public KerberosServiceImpl(long timeout, String kinitPath, String configPath) {
+        this.timeout = timeout;
+        this.kinitPath = kinitPath;
+        this.configPath = configPath;
+    }
 
     @Override
     public KrbConfig runKinit(DataSourceUnsecuredDTO dataSource, RuntimeServiceMode environmentMode, File workDir) throws IOException {
@@ -148,9 +144,7 @@ public class KerberosServiceImpl implements KerberosService {
                 throw new IllegalArgumentException("Unsupported authentication type");
         }
         String[] command = builder.build();
-        if (log.isDebugEnabled()) {
-            log.debug("Kerberos init command: {}", StringUtils.join(command, " "));
-        }
+        log.info("Kerberos init command: {}", StringUtils.join(command, " "));
         return command;
     }
 

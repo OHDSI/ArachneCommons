@@ -20,7 +20,7 @@
  *
  */
 
-package com.odysseusinc.krblogin;
+package com.odysseusinc.datasourcemanager.krblogin;
 
 import org.apache.commons.lang3.StringUtils;
 
