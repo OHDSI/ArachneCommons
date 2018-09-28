@@ -135,7 +135,7 @@ public class KerberosServiceImpl implements KerberosService {
                             .statement("echo " + dataSource.getKrbPassword() + " | " + kinitPath + KINIT_COMMAND + " " +
                                     dataSource.getKrbUser() + "@" + dataSource.getKrbRealm());
                 } else if (SystemUtils.IS_OS_WINDOWS) {
-                    throw new RuntimeException("PASSWORD authentication is forbidden for Windows, ise KEYTAB instead");
+                    throw new RuntimeException("PASSWORD authentication is forbidden for Windows, use KEYTAB instead");
                 }
                 break;
             case KEYTAB:
