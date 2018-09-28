@@ -29,6 +29,7 @@ import com.odysseusinc.arachne.execution_engine_common.api.v1.dto.KerberosAuthMe
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,13 +126,17 @@ public class KerberosServiceImpl implements KerberosService {
         }
         switch (dataSource.getKrbAuthMethod()) {
             case PASSWORD:
-                if (StringUtils.isBlank(dataSource.getKrbPassword())) {
-                    throw new IllegalArgumentException("Kerberos password is required for PASSWORD authentication");
+                if (SystemUtils.IS_OS_UNIX) {
+                    if (StringUtils.isBlank(dataSource.getKrbPassword())) {
+                        throw new IllegalArgumentException("Kerberos password is required for PASSWORD authentication");
+                    }
+                    builder.statement("bash")
+                            .withParam("-c")
+                            .statement("echo " + dataSource.getKrbPassword() + " | " + kinitPath + KINIT_COMMAND + " " +
+                                    dataSource.getKrbUser() + "@" + dataSource.getKrbRealm());
+                } else if (SystemUtils.IS_OS_WINDOWS) {
+                    throw new RuntimeException("PASSWORD authentication is forbidden for Windows, ise KEYTAB instead");
                 }
-                builder.statement("bash")
-                        .withParam("-c")
-                        .statement("echo " + dataSource.getKrbPassword() + " | " + kinitPath + KINIT_COMMAND + " " +
-                                dataSource.getKrbUser() + "@" + dataSource.getKrbRealm());
                 break;
             case KEYTAB:
                 builder.statement(kinitPath + KINIT_COMMAND)
