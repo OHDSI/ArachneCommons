@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class KrbConfig {
@@ -51,8 +52,13 @@ public class KrbConfig {
         if (kinitCommand == null) {
             kinitParamsLine = "";
         } else {
-            String[] kinitParams = Arrays.copyOfRange(getKinitCommand(), 1, getKinitCommand().length);
-            kinitParamsLine = StringUtils.join(kinitParams, " ").replace(keytabPath.toString(), KRB_KEYTAB_PATH);
+            List<String> kinitParamsList = Arrays.asList(kinitCommand);
+            if (kinitParamsList.contains("bash")) {
+                kinitParamsLine = kinitCommand[2].substring(kinitCommand[2].indexOf("|") + 2);
+            } else {
+                String[] kinitParams = Arrays.copyOfRange(kinitCommand, 1, kinitCommand.length);
+                kinitParamsLine = StringUtils.join(kinitParams, " ").replace(keytabPath.toString(), KRB_KEYTAB_PATH);
+            }
         }
         krbEnvProps.put(RUNTIME_ENV_KINIT_PARAMS, kinitParamsLine);
         return krbEnvProps;

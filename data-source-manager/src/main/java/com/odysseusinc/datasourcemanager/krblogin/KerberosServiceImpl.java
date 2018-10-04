@@ -149,9 +149,7 @@ public class KerberosServiceImpl implements KerberosService {
             default:
                 throw new IllegalArgumentException("Unsupported authentication type");
         }
-        String[] command = builder.build();
-        log.info("Kerberos init command: {}", StringUtils.join(command, " "));
-        return command;
+        return builder.build();
     }
 
     private Path buildTempKrbConf(DataSourceUnsecuredDTO dataSource) throws IOException {
