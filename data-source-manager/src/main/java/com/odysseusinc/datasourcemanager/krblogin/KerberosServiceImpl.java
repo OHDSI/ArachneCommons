@@ -121,19 +121,19 @@ public class KerberosServiceImpl implements KerberosService {
     private String[] buildKinitCommand(DataSourceUnsecuredDTO dataSource, Path keytab) {
 
         CommandBuilder builder = CommandBuilder.newCommand();
-        if (StringUtils.isBlank(dataSource.getKrbUser())) {
+        if (StringUtils.isBlank(dataSource.getUsername())) {
             throw new IllegalArgumentException("Kerberos user is required for authentication");
         }
         switch (dataSource.getKrbAuthMethod()) {
             case PASSWORD:
                 if (SystemUtils.IS_OS_UNIX) {
-                    if (StringUtils.isBlank(dataSource.getKrbPassword())) {
+                    if (StringUtils.isBlank(dataSource.getPassword())) {
                         throw new IllegalArgumentException("Kerberos password is required for PASSWORD authentication");
                     }
                     builder.statement("bash")
                             .withParam("-c")
-                            .statement("echo " + dataSource.getKrbPassword() + " | " + kinitPath + KINIT_COMMAND + " " +
-                                    dataSource.getKrbUser() + "@" + dataSource.getKrbRealm());
+                            .statement("echo " + dataSource.getPassword() + " | " + kinitPath + KINIT_COMMAND + " " +
+                                    dataSource.getUsername() + "@" + dataSource.getKrbRealm());
                 } else if (SystemUtils.IS_OS_WINDOWS) {
                     //todo implement https://github.com/Waffle/waffle solution for this case
                     throw new RuntimeException("PASSWORD authentication is forbidden for Windows, use KEYTAB instead");
@@ -144,7 +144,7 @@ public class KerberosServiceImpl implements KerberosService {
                         .withParam("-k")
                         .withParam("-t")
                         .withParam(keytab.toString())
-                        .withParam(dataSource.getKrbUser() + "@" + dataSource.getKrbRealm());
+                        .withParam(dataSource.getUsername() + "@" + dataSource.getKrbRealm());
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported authentication type");
