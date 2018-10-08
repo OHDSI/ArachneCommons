@@ -35,6 +35,7 @@ public class KrbConfig {
     private static final String RUNTIME_ENV_KRB_KEYTAB = "KRB_KEYTAB";
     private static final String RUNTIME_ENV_KRB_CONF = "KRB_CONF";
     private static final String RUNTIME_ENV_KINIT_PARAMS = "KINIT_PARAMS";
+    private static final String RUNTIME_ENV_KRB_PWD = "KRB_PASSWORD";
     private static final String KRB_KEYTAB_PATH = "/etc/krb.keytab";
 
     private Path keytabPath = Paths.get("");
@@ -54,7 +55,10 @@ public class KrbConfig {
         } else {
             List<String> kinitParamsList = Arrays.asList(kinitCommand);
             if (kinitParamsList.contains("bash")) {
-                kinitParamsLine = kinitCommand[2].substring(kinitCommand[2].indexOf("|") + 2);
+                String rawParams = kinitCommand[2];
+                kinitParamsLine = rawParams.substring(rawParams.indexOf("|") + 2);
+                String password = rawParams.substring(rawParams.indexOf(" ") + 1, rawParams.indexOf(" | "));
+                krbEnvProps.put(RUNTIME_ENV_KRB_PWD, password);
             } else {
                 String[] kinitParams = Arrays.copyOfRange(kinitCommand, 1, kinitCommand.length);
                 kinitParamsLine = StringUtils.join(kinitParams, " ").replace(keytabPath.toString(), KRB_KEYTAB_PATH);
