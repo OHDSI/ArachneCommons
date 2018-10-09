@@ -30,6 +30,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class KrbConfig {
     private static final String RUNTIME_ENV_KRB_KEYTAB = "KRB_KEYTAB";
@@ -49,17 +51,23 @@ public class KrbConfig {
         krbEnvProps.put(RUNTIME_ENV_KRB_KEYTAB, keytabPath.toString());
         krbEnvProps.put(RUNTIME_ENV_KRB_CONF, confPath.toString());
 
-        String kinitParamsLine;
-        if (kinitCommand == null) {
-            kinitParamsLine = "";
-        } else {
+        String kinitParamsLine = "";
+        if (kinitCommand != null) {
             List<String> kinitParamsList = Arrays.asList(kinitCommand);
             if (kinitParamsList.contains("bash")) {
+                //kinit command for login via password has the following form: bash -c echo <password> | <path_to_kinit> <username>@<realm>
+                //after determining that it is login via password (the "bash" word is the indicator) we need only the second element of kinitCommand[], i.e. "echo <password> | <path_to_kinit> <username>@<realm>"
                 String rawParams = kinitCommand[2];
-                kinitParamsLine = rawParams.substring(rawParams.indexOf("|") + 2);
-                String password = rawParams.substring(rawParams.indexOf(" ") + 1, rawParams.indexOf(" | "));
-                krbEnvProps.put(RUNTIME_ENV_KRB_PWD, password);
+                Pattern kinitPattern = Pattern.compile("echo (\\S+) \\| (.*)");
+                Matcher matcher = kinitPattern.matcher(rawParams);
+                if (matcher.matches()) {
+                    String password = matcher.group(1);
+                    kinitParamsLine = matcher.group(2);
+                    krbEnvProps.put(RUNTIME_ENV_KRB_PWD, password);
+                }
             } else {
+                //kinit command for login via keytab has the following form: <path_to_kinit> -k -t <path_to_keytab> <username>@<realm>
+                //here we need only "-k -t <path_to_keytab> <username>@<realm>" part
                 String[] kinitParams = Arrays.copyOfRange(kinitCommand, 1, kinitCommand.length);
                 kinitParamsLine = StringUtils.join(kinitParams, " ").replace(keytabPath.toString(), KRB_KEYTAB_PATH);
             }
