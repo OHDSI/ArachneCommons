@@ -28,10 +28,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.odysseusinc.datasourcemanager.krblogin.KerberosServiceImpl.KINIT_COMMAND;
 
 public class KrbConfig {
     private static final String RUNTIME_ENV_KRB_KEYTAB = "KRB_KEYTAB";
@@ -40,50 +39,35 @@ public class KrbConfig {
     private static final String RUNTIME_ENV_KRB_PWD = "KRB_PASSWORD";
     private static final String KRB_KEYTAB_PATH = "/etc/krb.keytab";
 
-    private Path keytabPath = Paths.get("");
     private Path confPath = Paths.get("");
-    private String[] kinitCommand;
     private RuntimeServiceMode mode;
+    private KinitComponents components;
 
     public Map<String, String> getIsolatedRuntimeEnvs() {
 
         Map<String, String> krbEnvProps = new HashMap<>();
-        krbEnvProps.put(RUNTIME_ENV_KRB_KEYTAB, keytabPath.toString());
+        krbEnvProps.put(RUNTIME_ENV_KRB_KEYTAB, components.getKeytabPath().toString());
         krbEnvProps.put(RUNTIME_ENV_KRB_CONF, confPath.toString());
 
         String kinitParamsLine = "";
+        String[] kinitCommand = components.getKinitCommand();
         if (kinitCommand != null) {
-            List<String> kinitParamsList = Arrays.asList(kinitCommand);
-            if (kinitParamsList.contains("bash")) {
-                //kinit command for login via password has the following form: bash -c echo <password> | <path_to_kinit> <username>@<realm>
-                //after determining that it is login via password (the "bash" word is the indicator) we need only the second element of kinitCommand[], i.e. "echo <password> | <path_to_kinit> <username>@<realm>"
-                String rawParams = kinitCommand[2];
-                Pattern kinitPattern = Pattern.compile("echo (\\S+) \\| (.*)");
-                Matcher matcher = kinitPattern.matcher(rawParams);
-                if (matcher.matches()) {
-                    String password = matcher.group(1);
-                    kinitParamsLine = matcher.group(2);
-                    krbEnvProps.put(RUNTIME_ENV_KRB_PWD, password);
+
+            switch (components.getAuthMechanism()) {
+                case PASSWORD: {
+                    krbEnvProps.put(RUNTIME_ENV_KRB_PWD, components.getKrbPassword());
+                    kinitParamsLine = components.getKinitPath() + KINIT_COMMAND + " " + components.getKrbUser() + "@" + components.getKrbRealm();
+                    break;
                 }
-            } else {
-                //kinit command for login via keytab has the following form: <path_to_kinit> -k -t <path_to_keytab> <username>@<realm>
-                //here we need only "-k -t <path_to_keytab> <username>@<realm>" part
-                String[] kinitParams = Arrays.copyOfRange(kinitCommand, 1, kinitCommand.length);
-                kinitParamsLine = StringUtils.join(kinitParams, " ").replace(keytabPath.toString(), KRB_KEYTAB_PATH);
+                case KEYTAB: {
+                    String[] kinitParams = Arrays.copyOfRange(kinitCommand, 1, kinitCommand.length);
+                    kinitParamsLine = StringUtils.join(kinitParams, " ").replace(components.getKeytabPath().toString(), KRB_KEYTAB_PATH);
+                    break;
+                }
             }
         }
         krbEnvProps.put(RUNTIME_ENV_KINIT_PARAMS, kinitParamsLine);
         return krbEnvProps;
-    }
-
-    public Path getKeytabPath() {
-
-        return keytabPath;
-    }
-
-    public void setKeytabPath(Path keytabPath) {
-
-        this.keytabPath = keytabPath;
     }
 
     public Path getConfPath() {
@@ -96,16 +80,6 @@ public class KrbConfig {
         this.confPath = confPath;
     }
 
-    public String[] getKinitCommand() {
-
-        return kinitCommand;
-    }
-
-    public void setKinitCommand(String[] kinitCommand) {
-
-        this.kinitCommand = kinitCommand;
-    }
-
     public RuntimeServiceMode getMode() {
 
         return mode;
@@ -114,5 +88,13 @@ public class KrbConfig {
     public void setMode(RuntimeServiceMode mode) {
 
         this.mode = mode;
+    }
+
+    public KinitComponents getComponents() {
+        return components;
+    }
+
+    public void setComponents(KinitComponents components) {
+        this.components = components;
     }
 }
