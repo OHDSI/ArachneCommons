@@ -222,6 +222,9 @@ public class KerberosServiceImpl implements KerberosService {
     private String addNewDomainRealm(DataSourceUnsecuredDTO dataSource, String confStr) {
 
         String newDomain = "  " + dataSource.getKrbFQDN() + " = " + dataSource.getKrbRealm();
+        if (!confStr.contains(DOMAIIN_REALM)) {
+            confStr += System.lineSeparator() + DOMAIIN_REALM + System.lineSeparator();
+        }
         int startPosition = confStr.indexOf(DOMAIIN_REALM) + DOMAIIN_REALM.length();
         return confStr.replace(confStr.substring(0, startPosition), confStr.substring(0, startPosition) + System.lineSeparator() + newDomain);
     }
