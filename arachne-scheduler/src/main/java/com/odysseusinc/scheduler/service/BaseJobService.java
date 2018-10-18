@@ -10,4 +10,6 @@ public interface BaseJobService<T extends ArachneJob> {
     T updateJob(T job) throws JobNotFoundException;
 
     void delete(T job);
+
+    void reassignAllJobs();
 }

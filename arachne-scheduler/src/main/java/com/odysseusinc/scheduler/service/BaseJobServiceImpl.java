@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -101,6 +102,15 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
         T updated = jobRepository.save(exists);
         afterUpdate(updated);
         return updated;
+    }
+
+    @Override
+    public void reassignAllJobs() {
+        List<T> jobs = jobRepository.findAllByEnabledTrueAndIsClosedFalse();
+        jobs.forEach(job -> {
+            removeFromScheduler(job.getId());
+            addToScheduler(job);
+        });
     }
 
     @Override

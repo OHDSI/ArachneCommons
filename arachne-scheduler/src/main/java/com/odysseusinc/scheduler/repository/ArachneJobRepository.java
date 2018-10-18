@@ -10,4 +10,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface ArachneJobRepository<T extends ArachneJob> extends EntityGraphJpaRepository<T, Long> {
 
     List<T> findAllByEnabledTrueAndIsClosedFalse(EntityGraph entityGraph);
+
+    List<T> findAllByEnabledTrueAndIsClosedFalse();
 }
