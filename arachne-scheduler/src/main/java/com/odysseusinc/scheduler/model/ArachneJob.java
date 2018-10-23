@@ -37,8 +37,6 @@ public abstract class ArachneJob {
     @Enumerated(EnumType.STRING)
     private JobExecutingType frequency;
 
-//    protected List<DayOfWeek> weekDays;
-
     @Min(0)
     @Column(name = "executed_times")
     private Integer executedTimes = 0;
