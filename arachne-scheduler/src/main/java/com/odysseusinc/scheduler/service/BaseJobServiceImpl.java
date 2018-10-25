@@ -56,7 +56,8 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
         if (!isClosed && saved.getEnabled()) {
             addToScheduler(saved);
         }
-        afterCreate(job);
+        assignNextExecution(saved);
+        afterCreate(saved);
         return saved;
     }
 
@@ -100,6 +101,7 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
             addToScheduler(exists);
         }
         T updated = jobRepository.save(exists);
+        assignNextExecution(updated);
         afterUpdate(updated);
         return updated;
     }
@@ -140,8 +142,7 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
         if (job.getRecurringTimes() > 0) {
             result = job.getExecutedTimes() >= job.getRecurringTimes();
         }
-        final CronParser parser = new CronParser(cronDefinition);
-        final ExecutionTime executionTime = ExecutionTime.forCron(parser.parse(job.getCron()));
+        final ExecutionTime executionTime = getExecutionTime(job);
         final ZonedDateTime lastExecuted = ZonedDateTime.now();
         final ZonedDateTime nextExecution = executionTime.nextExecution(lastExecuted);
         final Date recurringUntilDate = job.getRecurringUntilDate();
@@ -151,6 +152,25 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
             result = result || diff <= 0;
         }
         return result;
+    }
+
+    protected T assignNextExecution(T job) {
+
+        ZonedDateTime nextExecution = getNextExecution(job);
+        job.setNextExecution(Date.from(nextExecution.toInstant()));
+        return job;
+    }
+
+    protected ZonedDateTime getNextExecution(T job) {
+
+        final ExecutionTime executionTime = getExecutionTime(job);
+        return executionTime.nextExecution(ZonedDateTime.now());
+    }
+
+    protected final ExecutionTime getExecutionTime(T job) {
+
+        final CronParser parser = new CronParser(cronDefinition);
+        return ExecutionTime.forCron(parser.parse(job.getCron()));
     }
 
     private ZonedDateTime getZonedDateTime(Date date) {

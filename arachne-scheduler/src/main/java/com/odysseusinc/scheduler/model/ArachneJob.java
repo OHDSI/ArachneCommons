@@ -59,6 +59,9 @@ public abstract class ArachneJob {
     @Column(name = "cron")
     private String cron;
 
+    @Transient
+    private Date nextExecution;
+
     public Long getId() {
 
         return id;
@@ -162,6 +165,16 @@ public abstract class ArachneJob {
     public void setCron(String cron) {
 
         this.cron = cron;
+    }
+
+    public Date getNextExecution() {
+
+        return nextExecution;
+    }
+
+    public void setNextExecution(Date nextExecution) {
+
+        this.nextExecution = nextExecution;
     }
 
     @Override

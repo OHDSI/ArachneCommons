@@ -18,6 +18,7 @@ public abstract class BaseArachneJobToArachneJobDTOConverter<S extends ArachneJo
         dto.setRecurringUntilDate(s.getRecurringUntilDate());
         dto.setStartDate(s.getStartDate());
         dto.setWeekDays(s.getWeekDays());
+        dto.setNextExecution(s.getNextExecution());
         convertJob(s, dto);
     }
 

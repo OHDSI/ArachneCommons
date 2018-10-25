@@ -15,6 +15,8 @@ public class ArachneJobDTO {
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Date startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Date nextExecution;
     @NotNull
     private JobExecutingType frequency;
     private List<DayOfWeek> weekDays = new ArrayList<>();
@@ -100,5 +102,15 @@ public class ArachneJobDTO {
     public void setClosed(Boolean closed) {
 
         isClosed = closed;
+    }
+
+    public Date getNextExecution() {
+
+        return nextExecution;
+    }
+
+    public void setNextExecution(Date nextExecution) {
+
+        this.nextExecution = nextExecution;
     }
 }
