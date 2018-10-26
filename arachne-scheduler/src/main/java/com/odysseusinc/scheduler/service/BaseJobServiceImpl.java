@@ -5,6 +5,7 @@ import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 import com.odysseusinc.scheduler.exception.JobNotFoundException;
 import com.odysseusinc.scheduler.model.ArachneJob;
+import com.odysseusinc.scheduler.model.JobExecutingType;
 import com.odysseusinc.scheduler.model.ScheduledTask;
 import com.odysseusinc.scheduler.repository.ArachneJobRepository;
 import java.time.ZoneId;
@@ -18,11 +19,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJobService<T> {
+public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJobService<T>, ApplicationContextAware {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     protected static final String ADDING_NEW_TO_SCHEDULER_LOG = "Scheduling new job";
@@ -32,6 +37,7 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
     private final TaskScheduler taskScheduler;
     private final CronDefinition cronDefinition;
     private final ArachneJobRepository<T> jobRepository;
+    protected ApplicationContext applicationContext;
 
     private final Map<Long, ScheduledFuture> taskInWork = new ConcurrentHashMap<>();
 
@@ -42,6 +48,11 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
         this.taskScheduler = taskScheduler;
         this.cronDefinition = cronDefinition;
         this.jobRepository = jobRepository;
+    }
+
+    @Override
+    public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -145,6 +156,9 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
         final ExecutionTime executionTime = getExecutionTime(job);
         final ZonedDateTime lastExecuted = ZonedDateTime.now();
         final ZonedDateTime nextExecution = executionTime.nextExecution(lastExecuted);
+        if (JobExecutingType.ONCE.equals(job.getFrequency())) {
+            return !Objects.equals(job.getStartDate(), Date.from(nextExecution.toInstant()));
+        }
         final Date recurringUntilDate = job.getRecurringUntilDate();
         if (recurringUntilDate != null) {
             final ZonedDateTime recurringUntil = getZonedDateTime(recurringUntilDate);
@@ -157,14 +171,19 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
     protected T assignNextExecution(T job) {
 
         ZonedDateTime nextExecution = getNextExecution(job);
-        job.setNextExecution(Date.from(nextExecution.toInstant()));
+        job.setNextExecution(Objects.nonNull(nextExecution) ? Date.from(nextExecution.toInstant()) : null);
         return job;
     }
 
     protected ZonedDateTime getNextExecution(T job) {
 
-        final ExecutionTime executionTime = getExecutionTime(job);
-        return executionTime.nextExecution(ZonedDateTime.now());
+        if (Objects.equals(JobExecutingType.ONCE, job.getFrequency())) {
+            return job.getEnabled() && Objects.isNull(job.getLastExecutedAt()) ?
+                    ZonedDateTime.ofInstant(job.getStartDate().toInstant(), ZoneId.systemDefault()) : null;
+        } else {
+            final ExecutionTime executionTime = getExecutionTime(job);
+            return executionTime.nextExecution(ZonedDateTime.now());
+        }
     }
 
     protected final ExecutionTime getExecutionTime(T job) {
@@ -182,11 +201,25 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
 
         LOGGER.debug(ADDING_NEW_TO_SCHEDULER_LOG);
         removeFromScheduler(job.getId());
-        final ScheduledFuture<?> runningTask = taskScheduler.schedule(
-                buildScheduledTask(job),
-                new CronTrigger(job.getCron())
-        );
-        taskInWork.put(job.getId(), runningTask);
+        if (job.getEnabled()) {
+            final ScheduledFuture<?> runningTask;
+            ScheduledTask<T> scheduledTask = buildScheduledTask(job);
+            ScheduledTaskDelegate<T> taskDelegate = new ScheduledTaskDelegate<T>(scheduledTask, getJobService());
+            if (Objects.equals(JobExecutingType.ONCE, job.getFrequency())) {
+                runningTask = taskScheduler.schedule(taskDelegate, job.getStartDate());
+            } else {
+                runningTask = taskScheduler.schedule(
+                        taskDelegate,
+                        new CronTrigger(job.getCron())
+                );
+            }
+            taskInWork.put(job.getId(), runningTask);
+        }
+    }
+
+    protected BaseJobService<T> getJobService() {
+
+        return applicationContext.getBean(BaseJobService.class);
     }
 
     protected void removeFromScheduler(Long id) {

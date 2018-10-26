@@ -7,4 +7,9 @@ public abstract class ScheduledTask<T extends ArachneJob> implements Runnable {
 
         this.job = job;
     }
+
+    public T getJob() {
+
+        return job;
+    }
 }
