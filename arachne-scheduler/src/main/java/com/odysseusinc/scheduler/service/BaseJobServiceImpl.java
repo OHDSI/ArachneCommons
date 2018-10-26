@@ -183,13 +183,16 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
 
     protected ZonedDateTime getNextExecution(T job) {
 
-        if (Objects.equals(JobExecutingType.ONCE, job.getFrequency())) {
-            return job.getEnabled() ?
-                    ZonedDateTime.ofInstant(job.getStartDate().toInstant(), ZoneId.systemDefault()) : null;
-        } else {
-            final ExecutionTime executionTime = getExecutionTime(job);
-            return executionTime.nextExecution(ZonedDateTime.now());
+        ZonedDateTime result = null;
+        if (job.getEnabled()) {
+            if (Objects.equals(JobExecutingType.ONCE, job.getFrequency())) {
+                result = ZonedDateTime.ofInstant(job.getStartDate().toInstant(), ZoneId.systemDefault());
+            } else {
+                final ExecutionTime executionTime = getExecutionTime(job);
+                result = executionTime.nextExecution(ZonedDateTime.now());
+            }
         }
+        return result;
     }
 
     protected final ExecutionTime getExecutionTime(T job) {
