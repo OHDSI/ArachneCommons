@@ -119,11 +119,17 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
 
     @Override
     public void reassignAllJobs() {
-        List<T> jobs = jobRepository.findAllByEnabledTrueAndIsClosedFalse();
+
+        List<T> jobs = getActiveJobs();
         jobs.forEach(job -> {
             removeFromScheduler(job.getId());
             addToScheduler(job);
         });
+    }
+
+    protected List<T> getActiveJobs() {
+
+        return jobRepository.findAllByEnabledTrueAndIsClosedFalse();
     }
 
     @Override
@@ -178,7 +184,7 @@ public abstract class BaseJobServiceImpl<T extends ArachneJob> implements BaseJo
     protected ZonedDateTime getNextExecution(T job) {
 
         if (Objects.equals(JobExecutingType.ONCE, job.getFrequency())) {
-            return job.getEnabled() && Objects.isNull(job.getLastExecutedAt()) ?
+            return job.getEnabled() ?
                     ZonedDateTime.ofInstant(job.getStartDate().toInstant(), ZoneId.systemDefault()) : null;
         } else {
             final ExecutionTime executionTime = getExecutionTime(job);
