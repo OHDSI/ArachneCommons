@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,11 +39,12 @@ public class DataSourceUnsecuredDTO {
     private String cohortTargetTable;
     private Boolean useKerberos = false;
     private String krbRealm;
+    private String krbAdminFQDN;
     private String krbFQDN;
     private String krbUser;
     private byte[] krbKeytab;
     private String krbPassword;
-    private KerberosAuthMethod krbAuthMethod;
+    private KerberosAuthMechanism krbAuthMethod;
 
     public String getConnectionString() {
 
@@ -70,6 +71,12 @@ public class DataSourceUnsecuredDTO {
             return clearConnString;
         }
         return null;
+    }
+
+    @JsonIgnore
+    public String getConnectionStringAndUserAndPassword() {
+
+        return getConnectionString() + "&" + getUsername() + "&" + getPassword();
     }
 
     public DBMSType getType() {
@@ -202,13 +209,23 @@ public class DataSourceUnsecuredDTO {
         this.krbPassword = krbPassword;
     }
 
-    public KerberosAuthMethod getKrbAuthMethod() {
+    public KerberosAuthMechanism getKrbAuthMethod() {
 
         return krbAuthMethod;
     }
 
-    public void setKrbAuthMethod(KerberosAuthMethod krbAuthMethod) {
+    public void setKrbAuthMethod(KerberosAuthMechanism krbAuthMethod) {
 
         this.krbAuthMethod = krbAuthMethod;
+    }
+
+    public String getKrbAdminFQDN() {
+
+        return krbAdminFQDN;
+    }
+
+    public void setKrbAdminFQDN(String krbAdminFQDN) {
+
+        this.krbAdminFQDN = krbAdminFQDN;
     }
 }
