@@ -200,9 +200,30 @@ public class DataSourceUnsecuredDTO {
         this.krbUser = krbUser;
     }
 
+
+    /**
+     * @deprecated Use {@link #getKeyfile()} instead
+     * @return
+     */
+    @Deprecated
+    public byte[] getKrbKeytab() {
+
+        return keyfile;
+    }
+
     public byte[] getKeyfile() {
 
         return keyfile;
+    }
+
+    /**
+     * @deprecated Use {@link #setKeyfile(byte[])} instead
+     * @param keyfile
+     */
+    @Deprecated
+    public void setKrbKeytab(byte[] keyfile) {
+
+        this.setKeyfile(keyfile);
     }
 
     public void setKeyfile(byte[] keyfile) {
