@@ -21,5 +21,6 @@ public class ComparableVersionTest {
 		assertThat(VERSION.isGreaterOrEqualsThan("2.7.1"), is(false));
 		assertThat(VERSION.isLesserThan("2.7.0-RELEASE"), is(true));
 		assertThat(VERSION.isLesserOrEqualsThan("2.8.1"), is(true));
+		assertThat(VERSION.isLesserOrEqualsThan("2.7.2.bcbs"), is(true));
 	}
 }
