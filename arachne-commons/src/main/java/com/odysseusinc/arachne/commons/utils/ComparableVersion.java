@@ -16,7 +16,7 @@ public class ComparableVersion implements Comparable<ComparableVersion> {
 	private String prefix;
 	private String suffix;
 	private List<Integer> digits = new ArrayList<>();
-	private static final String VERSION_REGEX = "(\\w+)*?((\\d+\\.*)+)([-_](\\w+))*";
+	private static final String VERSION_REGEX = "(\\w+)*?((\\d+\\.*)+)([-_.](\\w+))*";
 	private static final Map<String, Integer> KNOWN_QUALIFIERS = ImmutableMap.<String, Integer>builder()
 					.put("snapshot", -1)
 					.put("rc", 5)
