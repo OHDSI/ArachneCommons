@@ -32,7 +32,7 @@ public enum CommonAnalysisType {
     COHORT("Cohort (Simple Counts)"),
     INCIDENCE("Incidence rates"),
     COHORT_PATHWAY("Cohort Pathway");
-    
+
 
     private String title;
 
