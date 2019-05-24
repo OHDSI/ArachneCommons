@@ -104,7 +104,7 @@ public class FeignSpringFormEncoder implements Encoder {
      * @param file
      * @return
      */
-    private static HttpEntity<?> encodeMultipartFile(MultipartFile file) {
+    public static HttpEntity<?> encodeMultipartFile(MultipartFile file) {
         HttpHeaders filePartHeaders = new HttpHeaders();
         filePartHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         try {
@@ -123,7 +123,7 @@ public class FeignSpringFormEncoder implements Encoder {
      * @param name the name of the array field in the multipart form.
      * @param files
      */
-    private static void encodeMultipartFiles(LinkedMultiValueMap<String, Object> map, String name, List<? extends MultipartFile> files) {
+    public static void encodeMultipartFiles(LinkedMultiValueMap<String, Object> map, String name, List<? extends MultipartFile> files) {
         HttpHeaders filePartHeaders = new HttpHeaders();
         filePartHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         try {
@@ -143,7 +143,7 @@ public class FeignSpringFormEncoder implements Encoder {
      * @param o
      * @return
      */
-    private static HttpEntity<?> encodeJsonObject(Object o) {
+    public static HttpEntity<?> encodeJsonObject(Object o) {
         HttpHeaders jsonPartHeaders = new HttpHeaders();
         jsonPartHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(o, jsonPartHeaders);
