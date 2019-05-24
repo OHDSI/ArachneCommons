@@ -44,8 +44,7 @@ public class AnalysisRequestStatusDTO {
 
     public AnalysisRequestStatusDTO(Long id, AnalysisRequestTypeDTO type, Future executionFuture) {
 
-        this.id = id;
-        this.type = type;
+        this(id, type);
         this.executionFuture = executionFuture;
     }
 
