@@ -19,6 +19,7 @@
         <module>data-source-manager</module>
         <module>arachne-scheduler</module>
         <module>arachne-common-types</module>
+        <module>common-utils</module>
     </modules>
 
     <properties>
