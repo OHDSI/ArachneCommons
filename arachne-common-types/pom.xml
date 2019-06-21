@@ -2,14 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>arachne-commons-bundle</artifactId>
-        <groupId>com.odysseusinc.arachne</groupId>
-        <version>1.15.0-alpha</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.odysseusinc.arachne</groupId>
     <artifactId>arachne-common-types</artifactId>
+    <version>1.15.0-alpha</version>
+    <packaging>jar</packaging>
 
     <distributionManagement>
         <snapshotRepository>
