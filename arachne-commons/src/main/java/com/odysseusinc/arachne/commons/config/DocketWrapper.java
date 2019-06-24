@@ -24,10 +24,7 @@ package com.odysseusinc.arachne.commons.config;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -37,13 +34,18 @@ import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
 public class DocketWrapper {
 
     private Docket docket;
 
-    public DocketWrapper(Docket docket) {
+    public Docket getDocket() {
 
-        this.docket = docket;
+        return docket;
     }
 
     public DocketWrapper(String title,
@@ -53,6 +55,18 @@ public class DocketWrapper {
                          String tokenHeader,
                          Class<? extends Annotation> annotation,
                          String... packages) {
+
+
+        this.docket = buildDocket(title, description, version, license, tokenHeader, annotation, packages);
+    }
+
+    public static Docket buildDocket(String title,
+                                     String description,
+                                     String version,
+                                     String license,
+                                     String tokenHeader,
+                                     Class<? extends Annotation> annotation,
+                                     String... packages) {
 
 
         final List<SecurityScheme> securitySchemes
@@ -69,7 +83,8 @@ public class DocketWrapper {
                 .reduce(Predicates::and)
                 .orElse(x -> true);
 
-        this.docket = new Docket(DocumentationType.SWAGGER_2)
+        final String apiVersion = StringUtils.split(version, '-')[0];
+        return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(selectorPredicate)
                 .paths(PathSelectors.any())
@@ -78,7 +93,7 @@ public class DocketWrapper {
                         .title(title)
                         .license(license)
                         .description(description)
-                        .version(version)
+                        .version(apiVersion)
                         .build()
                 )
                 .securitySchemes(securitySchemes)
@@ -86,8 +101,4 @@ public class DocketWrapper {
                 .useDefaultResponseMessages(false);
     }
 
-    public Docket getDocket() {
-
-        return docket;
-    }
 }
