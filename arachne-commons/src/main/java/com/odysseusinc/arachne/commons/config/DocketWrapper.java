@@ -41,32 +41,23 @@ import java.util.stream.Stream;
 
 public class DocketWrapper {
 
-    private Docket docket;
+    private final Docket docket;
 
     public Docket getDocket() {
-
         return docket;
     }
 
-    public DocketWrapper(String title,
-                         String description,
-                         String version,
-                         String license,
-                         String tokenHeader,
-                         Class<? extends Annotation> annotation,
-                         String... packages) {
-
-
-        this.docket = buildDocket(title, description, version, license, tokenHeader, annotation, packages);
+    private DocketWrapper(Docket docket) {
+        this.docket = docket;
     }
 
-    public static Docket buildDocket(String title,
-                                     String description,
-                                     String version,
-                                     String license,
-                                     String tokenHeader,
-                                     Class<? extends Annotation> annotation,
-                                     String... packages) {
+    public static DocketWrapper createDocketWrapper(String title,
+                                      String description,
+                                      String version,
+                                      String license,
+                                      String tokenHeader,
+                                      Class<? extends Annotation> annotation,
+                                      String... packages) {
 
 
         final List<SecurityScheme> securitySchemes
@@ -84,7 +75,7 @@ public class DocketWrapper {
                 .orElse(x -> true);
 
         final String apiVersion = StringUtils.split(version, '-')[0];
-        return new Docket(DocumentationType.SWAGGER_2)
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(selectorPredicate)
                 .paths(PathSelectors.any())
@@ -99,6 +90,8 @@ public class DocketWrapper {
                 .securitySchemes(securitySchemes)
                 .pathMapping("/")
                 .useDefaultResponseMessages(false);
+
+        return new DocketWrapper(docket);
     }
 
 }
