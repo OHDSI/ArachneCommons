@@ -33,6 +33,7 @@
         <relativePath>../</relativePath>
     </parent>
 
+    <groupId>com.odysseusinc</groupId>
     <artifactId>data-source-manager</artifactId>
 
     <properties>
