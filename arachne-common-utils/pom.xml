@@ -1,63 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~
-  ~ Copyright 2018 Odysseus Data Services, inc.
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  ~ Company: Odysseus Data Services, Inc.
-  ~ Product Owner/Architecture: Gregory Klebanov
-  ~ Authors: Anastasiia Klochkova
-  ~ Created: August 28, 2018
-  ~
-  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
-        <groupId>com.odysseusinc.arachne</groupId>
         <artifactId>arachne-commons-bundle</artifactId>
+        <groupId>com.odysseusinc.arachne</groupId>
         <version>1.15.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.odysseusinc</groupId>
-    <artifactId>logging</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>arachne-common-utils</artifactId>
 
     <properties>
         <java.version>1.8</java.version>
-        <spring.boot.version>1.5.20.RELEASE</spring.boot.version>
+        <spring.version>5.1.7.RELEASE</spring.version>
+        <handlebars.version>4.0.6</handlebars.version>
+        <commons.io.version>2.5</commons.io.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <artifactId>arachne-commons</artifactId>
-            <groupId>com.odysseusinc.arachne</groupId>
-            <version>${project.version}</version>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars</artifactId>
+            <version>${handlebars.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-            <scope>compile</scope>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -87,6 +64,5 @@
             <url>http://repo.odysseusinc.com/artifactory/community-libs-release-local</url>
         </repository>
     </distributionManagement>
-
 
 </project>
