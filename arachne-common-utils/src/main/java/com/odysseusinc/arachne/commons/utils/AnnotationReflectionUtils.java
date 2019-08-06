@@ -18,6 +18,7 @@ public class AnnotationReflectionUtils {
       methods.addAll(Arrays.stream(current.getMethods())
               .filter(method -> method.isAnnotationPresent(annotation))
               .collect(Collectors.toList()));
+      Arrays.stream(current.getInterfaces()).forEach(i -> methods.addAll(getMethodsAnnotatedWith(i, annotation)));
       current = current.getSuperclass();
     }
     return methods;
