@@ -37,7 +37,6 @@ public class CommonUserDTO {
     private Date created;
     private Date updated;
     private CommonProfessionalTypeDTO professionalType;
-    private String centralToken;
 
     public String getId() {
         return id;
@@ -139,15 +138,5 @@ public class CommonUserDTO {
 
     public String getFullName() {
         return getFirstname() + " " + (getMiddlename() != null ? getMiddlename() : "") + " " + getLastname();
-    }
-
-    public String getCentralToken() {
-
-        return centralToken;
-    }
-
-    public void setCentralToken(String centralToken) {
-
-        this.centralToken = centralToken;
     }
 }
