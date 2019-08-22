@@ -61,7 +61,7 @@ public class CommonFileUtils {
                 .collect(Collectors.toList());
     }
 
-    public static void unzipFiles(File zipArchive, File destination) throws FileNotFoundException, ZipException {
+    public static void unzipFiles(File zipArchive, File destination) throws FileNotFoundException {
 
         if (destination == null || !destination.exists()) {
             throw new FileNotFoundException("Destination directory must be exist");
