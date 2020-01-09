@@ -16,18 +16,22 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <tomcat.version>8.5.50</tomcat.version>
+        <spring.version>5.1.7.RELEASE</spring.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>RELEASE</version>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>RELEASE</version>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

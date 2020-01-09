@@ -19,7 +19,7 @@
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
         <postgresql.version>42.2.1</postgresql.version>
         <flyway.version>4.2.0</flyway.version>
-        <spring.jasypt.version>1.12</spring.jasypt.version>
+        <spring.jasypt.version>1.18</spring.jasypt.version>
     </properties>
 
     <dependencies>
