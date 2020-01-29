@@ -12,7 +12,7 @@ public class AnalysisArchiveUtilsTest {
     public void getArchiveFileName() {
 
         LocalDateTime dateTime = LocalDateTime.of(2020, 1, 3, 13, 35, 20);
-        assertEquals("c-to_be_or_not_to_be-20200103133520.zip", AnalysisArchiveUtils.getArchiveFileName(CommonAnalysisType.COHORT, "to be, or<>  (not to be)!", dateTime));
+        assertEquals("c-to_be_or_not_to_be-20200103.zip", AnalysisArchiveUtils.getArchiveFileName(CommonAnalysisType.COHORT, "to be, or<>  (not to be)!", dateTime));
     }
 
 }

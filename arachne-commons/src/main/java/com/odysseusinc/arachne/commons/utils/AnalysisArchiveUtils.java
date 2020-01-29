@@ -14,7 +14,7 @@ public class AnalysisArchiveUtils {
 
     private static final String ARCHIVE_FILE_NAME_FORMAT = "%s-%s-%s.zip";
     public static final String ARCHIVE_FILE_NAME_DELIMITER = "_";
-    private static DateTimeFormatter ARCHIVE_FILE_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    private static DateTimeFormatter ARCHIVE_FILE_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public static String getAnalysisName(Map<String, ? extends Object> analysisMap) {
 

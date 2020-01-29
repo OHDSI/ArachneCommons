@@ -24,11 +24,10 @@ package com.odysseusinc.arachne.commons.api.v1.dto;
 
 public enum CommonAnalysisType {
     ESTIMATION("Population Level Effect Estimation", "ple"),
-    REPORTING("Reporting", "rep"),
     CUSTOM("Custom", "cstm"),
     PREDICTION("Patient Level Prediction", "plp"),
     COHORT_CHARACTERIZATION("Cohort (Characterization)", "cc"),
-    COHORT_HERACLES("Cohort (Heracles)", "hrcl"),
+    COHORT_HERACLES("Cohort (Heracles)", "cc_hrcls"),
     COHORT("Cohort (Simple Counts)", "c"),
     INCIDENCE("Incidence rates", "ir"),
     COHORT_PATHWAY("Cohort Pathway", "txp");
