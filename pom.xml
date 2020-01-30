@@ -8,6 +8,14 @@
     <groupId>com.odysseusinc.arachne</groupId>
     <version>1.16.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2/ </url>
+        </repository>
+    </repositories>
 
     <modules>
         <module>arachne-commons</module>
