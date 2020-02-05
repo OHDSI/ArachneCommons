@@ -18,7 +18,7 @@ public class AnalysisArchiveUtils {
 
     public static String getAnalysisName(Map<String, ? extends Object> analysisMap) {
 
-        if (MapUtils.isEmpty(analysisMap) || analysisMap.containsKey(NAME_FILED)) {
+        if (MapUtils.isEmpty(analysisMap) || !analysisMap.containsKey(NAME_FILED)) {
             return StringUtils.EMPTY;
         }
         return analysisMap.get("name").toString();
