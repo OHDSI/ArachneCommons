@@ -2,7 +2,7 @@ package com.odysseusinc.arachne.commons.utils;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.text.IsEmptyString.isEmptyString;
 import static org.junit.Assert.assertThat;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,7 +11,6 @@ import com.odysseusinc.arachne.commons.api.v1.dto.CommonAnalysisType;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 public class AnalysisArchiveUtilsTest {
@@ -28,23 +27,20 @@ public class AnalysisArchiveUtilsTest {
         );
     }
 
-
     @Test
     public void shouldGetAnalysisNameByProperties() {
 
-        assertEquals("analysis-name", AnalysisArchiveUtils.getAnalysisName(Collections.singletonMap("name", "analysis-name")));
-
         assertThat(
                 AnalysisArchiveUtils.getAnalysisName((Map<String, Object>) null),
-                is(equalTo(StringUtils.EMPTY))
+                isEmptyString()
         );
         assertThat(
                 AnalysisArchiveUtils.getAnalysisName(Collections.emptyMap()),
-                is(equalTo(StringUtils.EMPTY))
+                isEmptyString()
         );
         assertThat(
                 AnalysisArchiveUtils.getAnalysisName(Collections.singletonMap("wrong-key", "analysis-name")),
-                is(equalTo(StringUtils.EMPTY))
+                isEmptyString()
         );
     }
 
@@ -64,13 +60,13 @@ public class AnalysisArchiveUtilsTest {
         JsonNode node = MAPPER.readTree("{\"wrong-field\": \"analysis-name\"}");
         assertThat(
                 AnalysisArchiveUtils.getAnalysisName(node),
-                is(equalTo(StringUtils.EMPTY))
+                isEmptyString()
         );
 
         node = null;
         assertThat(
                 AnalysisArchiveUtils.getAnalysisName(node),
-                is(equalTo(StringUtils.EMPTY))
+                isEmptyString()
         );
     }
 }
