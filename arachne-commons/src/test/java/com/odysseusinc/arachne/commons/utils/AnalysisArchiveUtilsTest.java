@@ -1,6 +1,9 @@
 package com.odysseusinc.arachne.commons.utils;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,36 +16,61 @@ import org.junit.Test;
 
 public class AnalysisArchiveUtilsTest {
 
+    public static final ObjectMapper MAPPER = new ObjectMapper();
+
     @Test
-    public void getArchiveFileName() {
+    public void shouldGetArchiveFileName() {
 
         LocalDateTime dateTime = LocalDateTime.of(2020, 1, 3, 13, 35, 20);
-        assertEquals("c-to_be_or_not_to_be-20200103.zip", AnalysisArchiveUtils.getArchiveFileName(CommonAnalysisType.COHORT, "to be, or<>  (not to be)!", dateTime));
+        assertThat(
+                AnalysisArchiveUtils.getArchiveFileName(CommonAnalysisType.COHORT, "to be, or<>  (not to be)!", dateTime),
+                is(equalTo("c-to_be_or_not_to_be-20200103.zip"))
+        );
     }
 
 
     @Test
-    public void getAnalysisNameByProperties() {
+    public void shouldGetAnalysisNameByProperties() {
 
         assertEquals("analysis-name", AnalysisArchiveUtils.getAnalysisName(Collections.singletonMap("name", "analysis-name")));
 
-        assertEquals(StringUtils.EMPTY, AnalysisArchiveUtils.getAnalysisName((Map<String, ? extends Object>) null));
-        assertEquals(StringUtils.EMPTY, AnalysisArchiveUtils.getAnalysisName(Collections.emptyMap()));
-        assertEquals(StringUtils.EMPTY, AnalysisArchiveUtils.getAnalysisName(Collections.singletonMap("wrong-key", "analysis-name")));
+        assertThat(
+                AnalysisArchiveUtils.getAnalysisName((Map<String, Object>) null),
+                is(equalTo(StringUtils.EMPTY))
+        );
+        assertThat(
+                AnalysisArchiveUtils.getAnalysisName(Collections.emptyMap()),
+                is(equalTo(StringUtils.EMPTY))
+        );
+        assertThat(
+                AnalysisArchiveUtils.getAnalysisName(Collections.singletonMap("wrong-key", "analysis-name")),
+                is(equalTo(StringUtils.EMPTY))
+        );
     }
 
     @Test
-    public void getAnalysisNameByJson() throws Exception {
+    public void shouldGetAnalysisNameByJsonForWrongArguments() {
 
-        ObjectMapper mapper = new ObjectMapper();
+        assertThat(
+                AnalysisArchiveUtils.getAnalysisName(Collections.singletonMap("name", "analysis-name")),
+                is(equalTo("analysis-name"))
+        );
 
-        JsonNode node = mapper.readTree("{\"name\": \"analysis-name\"}");
-        assertEquals("analysis-name", AnalysisArchiveUtils.getAnalysisName(node));
+    }
 
-        node = mapper.readTree("{\"wrong-field\": \"analysis-name\"}");
-        assertEquals(StringUtils.EMPTY, AnalysisArchiveUtils.getAnalysisName(node));
+    @Test
+    public void shouldNotGetAnalysisNameByJsonForWrongArguments() throws Exception {
+
+        JsonNode node = MAPPER.readTree("{\"wrong-field\": \"analysis-name\"}");
+        assertThat(
+                AnalysisArchiveUtils.getAnalysisName(node),
+                is(equalTo(StringUtils.EMPTY))
+        );
 
         node = null;
-        assertEquals(StringUtils.EMPTY, AnalysisArchiveUtils.getAnalysisName(node));
+        assertThat(
+                AnalysisArchiveUtils.getAnalysisName(node),
+                is(equalTo(StringUtils.EMPTY))
+        );
     }
 }
