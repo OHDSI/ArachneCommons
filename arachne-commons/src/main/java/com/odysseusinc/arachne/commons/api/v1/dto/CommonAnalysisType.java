@@ -30,7 +30,10 @@ public enum CommonAnalysisType {
     COHORT_HERACLES("Cohort (Heracles)", "cc_hrcls"),
     COHORT("Cohort (Simple Counts)", "c"),
     INCIDENCE("Incidence rates", "ir"),
-    COHORT_PATHWAY("Cohort Pathway", "txp");
+    COHORT_PATHWAY("Cohort Pathway", "txp"),
+
+    //Reporting is currently unsupported. REPORTING value are used for compatibility with old existing analyzes
+    REPORTING("Reporting", "rep");
 
     private String title;
 
