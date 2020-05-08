@@ -33,6 +33,7 @@ public enum CommonAnalysisType {
     COHORT_PATHWAY("Cohort Pathway", "txp"),
 
     //Reporting is currently unsupported. REPORTING value are used for compatibility with old existing analyzes
+    @Deprecated
     REPORTING("Reporting", "rep");
 
     private String title;
