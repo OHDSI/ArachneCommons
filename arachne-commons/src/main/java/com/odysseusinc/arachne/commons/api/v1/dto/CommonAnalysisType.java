@@ -32,7 +32,9 @@ public enum CommonAnalysisType {
     INCIDENCE("Incidence rates", "ir"),
     COHORT_PATHWAY("Cohort Pathway", "txp"),
 
-    //Reporting is currently unsupported. REPORTING value are used for compatibility with old existing analyzes
+    /**
+     * REPORTING is currently unsupported. This left for backward compatibility only.
+     */
     @Deprecated
     REPORTING("Reporting", "rep");
 
