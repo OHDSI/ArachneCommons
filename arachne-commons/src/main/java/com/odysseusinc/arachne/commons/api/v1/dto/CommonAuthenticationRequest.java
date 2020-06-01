@@ -57,4 +57,8 @@ public class CommonAuthenticationRequest {
 		this.password = password;
 	}
 
+	public void normalizeLogin() {
+
+		this.username=this.username.toLowerCase().trim();
+	}
 }
