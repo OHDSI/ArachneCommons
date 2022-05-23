@@ -33,7 +33,8 @@ public enum DBMSType {
     BIGQUERY("Google BigQuery", "bigquery"),
     NETEZZA("Netezza", "netezza"),
     HIVE("Apache Hive", "hive"),
-    SPARK("Spark", "spark");
+    SPARK("Spark", "spark"),
+    SYNAPSE("Azure Synapse", "synapse");
 
     private String label;
     // For further pass into SqlRender.translateSql as "targetDialect" and DatabaseConnector as "dbms"
