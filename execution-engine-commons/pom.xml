@@ -17,7 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <feign.version>10.11</feign.version>
-        <jackon.version>2.10.5</jackon.version>
+        <jackson.version>2.12.7</jackson.version>
     </properties>
 
     <dependencies>
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackon.version}</version>
+            <version>${jackson.version}</version>
 
         </dependency>
 
