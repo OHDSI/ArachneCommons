@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.odysseusinc.arachne</groupId>
         <artifactId>arachne-commons-bundle</artifactId>
-        <version>1.20.3-SNAPSHOT</version>
+        <version>1.21.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -20,8 +20,8 @@
 
     <dependencies>
         <dependency>
-            <artifactId>arachne-commons</artifactId>
             <groupId>com.odysseusinc.arachne</groupId>
+            <artifactId>arachne-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
