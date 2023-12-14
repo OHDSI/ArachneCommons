@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.odysseusinc.arachne</groupId>
         <artifactId>arachne-commons-bundle</artifactId>
-        <version>1.20.0-QA</version>
+        <version>1.21.0-QA</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -36,11 +36,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-core</artifactId>
-            <version>${feign.version}</version>
         </dependency>
         <dependency>
             <groupId>com.odysseusinc.arachne</groupId>
@@ -74,4 +69,5 @@
             <name>community-libs-release-local</name>
             <url>https://nexus.odysseusinc.com/repository/community-libs-release-local</url>
         </repository>
-    </distributionManagement></project>
+    </distributionManagement>
+</project>

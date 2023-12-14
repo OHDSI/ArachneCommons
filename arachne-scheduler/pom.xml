@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.odysseusinc.arachne</groupId>
         <artifactId>arachne-commons-bundle</artifactId>
-        <version>1.20.0-QA</version>
+        <version>1.21.0-QA</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -77,4 +77,5 @@
             <name>community-libs-release-local</name>
             <url>https://nexus.odysseusinc.com/repository/community-libs-release-local</url>
         </repository>
-    </distributionManagement></project>
+    </distributionManagement>
+</project>

@@ -29,7 +29,7 @@
     <parent>
         <groupId>com.odysseusinc.arachne</groupId>
         <artifactId>arachne-commons-bundle</artifactId>
-        <version>1.20.0-QA</version>
+        <version>1.21.0-QA</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -46,10 +46,13 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
         </dependency>
     </dependencies>
 
