@@ -73,7 +73,7 @@
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-kahadb-store</artifactId>
             <!-- Explicitly overriding spring-boot-dependencies -->
-            <version>5.16.7</version>
+            <version>5.18.5</version>
         </dependency>
         <!-- End ActiveMQ -->
 
