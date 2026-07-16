@@ -24,10 +24,10 @@ package com.odysseusinc.arachne.commons.utils;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.net.util.Base64;
 
 public class UserIdUtils {
 
@@ -43,7 +43,7 @@ public class UserIdUtils {
         }
         Long hashedId = reversibleHash(id);
         byte[] bytes = stringToBytes(hashedId.toString());
-        return Base64.encodeBase64String(bytes, false);
+        return Base64.getEncoder().encodeToString(bytes);
     }
 
     public static Long uuidToId(String hash) {
@@ -51,7 +51,7 @@ public class UserIdUtils {
         if (hash == null) {
             return null;
         }
-        byte[] bytes = Base64.decodeBase64(hash);
+        byte[] bytes = Base64.getDecoder().decode(hash);
         String fromBytes = bytesToString(bytes);
         Long hashedId = Long.parseLong(fromBytes);
         return reversibleHash(hashedId);
