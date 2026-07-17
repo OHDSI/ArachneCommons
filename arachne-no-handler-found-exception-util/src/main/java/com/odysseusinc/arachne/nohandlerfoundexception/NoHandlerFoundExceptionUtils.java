@@ -22,11 +22,11 @@
 
 package com.odysseusinc.arachne.nohandlerfoundexception;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.function.Consumer;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -40,44 +40,50 @@ public class NoHandlerFoundExceptionUtils {
     private static final String STATIC_CONTENT_FOLDER = "public";
     private static final String INDEX_FILE = STATIC_CONTENT_FOLDER + "/index.html";
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+    private final WebApplicationContext webApplicationContext;
 
     @Autowired
     public NoHandlerFoundExceptionUtils(WebApplicationContext webApplicationContext) {
-
         this.webApplicationContext = webApplicationContext;
     }
 
     public void handleNotFoundError(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         handleNotFoundError(request, response, null);
     }
 
-    public void handleNotFoundError(HttpServletRequest request, HttpServletResponse response, Consumer<HttpServletResponse> addCookie)
-            throws Exception {
+    public void handleNotFoundError(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Consumer<HttpServletResponse> addCookie
+    ) throws Exception {
 
         ResourceHttpRequestHandler handler = new ResourceHttpRequestHandler() {
             @Override
             protected Resource getResource(HttpServletRequest request) throws IOException {
-
-                String requestPath = request.getRequestURI().substring(request.getContextPath().length());
+                String requestPath = request.getRequestURI()
+                        .substring(request.getContextPath().length());
 
                 ClassPathResource resource = new ClassPathResource(STATIC_CONTENT_FOLDER + requestPath);
+
                 if (!resource.exists()) {
                     resource = new ClassPathResource(INDEX_FILE);
                 }
+
                 if (addCookie != null) {
                     addCookie.accept(response);
                 }
+
                 return resource;
             }
         };
 
         handler.setServletContext(webApplicationContext.getServletContext());
-        handler.setLocations(Collections.singletonList(new ClassPathResource("classpath:/" + STATIC_CONTENT_FOLDER + "/")));
+
+        handler.setLocations(Collections.singletonList(
+                new ClassPathResource(STATIC_CONTENT_FOLDER + "/")
+        ));
+
         handler.afterPropertiesSet();
         handler.handleRequest(request, response);
     }
-
 }

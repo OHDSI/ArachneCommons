@@ -22,11 +22,11 @@
 
 package com.odysseusinc.arachne.commons.service.messaging;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.ObjectMessage;
+import jakarta.jms.Session;
 import org.springframework.jms.core.SessionCallback;
 import org.springframework.jms.support.JmsUtils;
 import org.springframework.jms.support.destination.DestinationResolver;

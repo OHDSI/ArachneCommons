@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.odysseusinc.arachne</groupId>
         <artifactId>arachne-commons-bundle</artifactId>
-        <version>1.17.4</version>
+        <version>1.17.5</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -17,7 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <flyway.version>4.2.0</flyway.version>
-        <activemq.version>5.16.5</activemq.version>
+        <activemq.version>6.2.7</activemq.version>
         <guava.version>30.1-jre</guava.version>
         <jackson.version>2.12.7</jackson.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
